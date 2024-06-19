@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Cluster graphs · PhyloGaussianBeliefProp.jl</title><meta name="title" content="Cluster graphs · PhyloGaussianBeliefProp.jl"/><meta property="og:title" content="Cluster graphs · PhyloGaussianBeliefProp.jl"/><meta property="twitter:title" content="Cluster graphs · PhyloGaussianBeliefProp.jl"/><meta name="description" content="Documentation for PhyloGaussianBeliefProp.jl."/><meta property="og:description" content="Documentation for PhyloGaussianBeliefProp.jl."/><meta property="twitter:description" content="Documentation for PhyloGaussianBeliefProp.jl."/><meta property="og:url" content="https://cecileane.github.io/PhyloGaussianBeliefProp.jl/stable/man/clustergraphs/"/><meta property="twitter:url" content="https://cecileane.github.io/PhyloGaussianBeliefProp.jl/stable/man/clustergraphs/"/><link rel="canonical" href="https://cecileane.github.io/PhyloGaussianBeliefProp.jl/stable/man/clustergraphs/"/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="../../assets/citations.css" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">PhyloGaussianBeliefProp.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">Manual</span><ul><li><a class="tocitem" href="../installation/">Installation</a></li><li><a class="tocitem" href="../getting_started/">Getting started</a></li><li><a class="tocitem" href="../background/">Background</a></li><li><a class="tocitem" href="../evolutionary_models/">Evolutionary models</a></li><li class="is-active"><a class="tocitem" href>Cluster graphs</a><ul class="internal"><li><a class="tocitem" href="#Clique-tree"><span>Clique tree</span></a></li><li><a class="tocitem" href="#Bethe-/-Factor-graph"><span>Bethe / Factor graph</span></a></li><li><a class="tocitem" href="#Join-graph-structuring"><span>Join-graph structuring</span></a></li><li><a class="tocitem" href="#LTRIP"><span>LTRIP</span></a></li></ul></li><li><a class="tocitem" href="../regularization/">Regularization</a></li><li><a class="tocitem" href="../message_schedules/">Message schedules</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Manual</a></li><li class="is-active"><a href>Cluster graphs</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Cluster graphs</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/cecileane/PhyloGaussianBeliefProp.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/cecileane/PhyloGaussianBeliefProp.jl/blob/main/docs/src/man/clustergraphs.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Cluster-graphs"><a class="docs-heading-anchor" href="#Cluster-graphs">Cluster graphs</a><a id="Cluster-graphs-1"></a><a class="docs-heading-anchor-permalink" href="#Cluster-graphs" title="Permalink"></a></h1><p>A cluster graph groups the nodes <span>$X_1,\dots,X_m$</span> of the phylogeny into several (possibly intersecting) clusters/subsets, such that for any node:</p><ul><li>there is <span>$\ge 1$</span> cluster that contains it and its parents (i.e. the clusters are (node) <em>family-preserving</em>)</li><li>the clusters that contain it are always joined as a tree, whose edge labels contain that node</li></ul><p>Each edge between two clusters <span>$\mathcal{C}_i,\mathcal{C}_j$</span> is labeled with a node subset <span>$\mathcal{S}_{i,j}\subseteq\mathcal{C}_i\cap\mathcal{C}_j$</span> based on the second property. These labels are referred to as sepsets (i.e a &quot;sep(arating) sets&quot;). </p><p>Intuitively, if the factors of a joint distribution <span>$p_\theta$</span> over the nodes are distributed among the clusters, then the topology of the cluster graph implies the possible computational pathways in which these factors may be sequentially &quot;combined&quot; by product or marginalization.</p><p>For example, a cluster&#39;s belief is the cumulative result of computations that might follow some walk along the cluster graph, ending at that cluster. This is then interpreted as an estimate of its conditional distribution given the data.</p><h2 id="Clique-tree"><a class="docs-heading-anchor" href="#Clique-tree">Clique tree</a><a id="Clique-tree-1"></a><a class="docs-heading-anchor-permalink" href="#Clique-tree" title="Permalink"></a></h2><p>A cluster graph whose topology is a tree is known as a clique tree. We provide the option to construct a clique tree, and 3 further options (below) for constructing (potentially) loopy cluster graphs.</p><p>A clique tree tends to have more clusters of larger size than a loopy cluster graph. The time-complexity of message passing on a cluster graph is parametrized by maximum cluster size, and so clique trees allow for exact inference but at a greater cost than approximate inference on a loopy cluster graph. Below is an example using a virus recombination network from <a href="https://doi.org/10.1038/s41467-022-31749-8">Müller et al. (2022, Fig 1a)</a> [<a href="../background/#muller2022bayesian">4</a>], with inheritance probabilities estimated from the inferred recombination breakpoints (see <a href="https://github.com/bstkj/graphicalmodels_for_phylogenetics_code/blob/5f61755c4defe804fd813113e883d49445971ade/real_networks/muller2022_nexus2newick.jl">muller2022_nexus2newick.jl</a>).</p><pre><code class="language-julia-repl hljs">julia&gt; net = readTopology(pkgdir(PhyloGaussianBeliefProp, &quot;test/example_networks&quot;, &quot;muller_2022.phy&quot;)); # 1161 edges, 801 nodes: 40 tips, 361 hybrid nodes, 400 internal tree nodes.
+
+julia&gt; preorder!(net)
+
+julia&gt; ct = PGBP.clustergraph!(net, PGBP.Cliquetree());
+
+julia&gt; PGBP.labels(ct) |&gt; length # no. of vertices/clusters in clique tree
+664
+
+julia&gt; PGBP.edge_labels(ct) |&gt; length # no. of edges in clique tree, one less than no. of clusters
+663
+
+julia&gt; clusters = PGBP.labels(ct) |&gt; collect; # vector of cluster labels
+
+julia&gt; clusters[1] # cluster label is the concatenation of node labels
+:I300I301I302I189
+
+julia&gt; ct[clusters[1]] # access metadata for `cluster[1]`: (node labels, preorder indices), nodes are arranged by decreasing preorder index
+([:I300, :I301, :I302, :I189], Int16[722, 719, 717, 487])
+
+julia&gt; using StatsBase # `summarystats`
+
+julia&gt; (length(ct[cl][1]) for cl in PGBP.labels(ct)) |&gt; collect |&gt; summarystats # distribution of cluster sizes
+Summary Stats:
+Length:         664
+Missing Count:  0
+Mean:           6.728916
+Std. Deviation: 6.120608
+Minimum:        2.000000
+1st Quartile:   4.000000
+Median:         5.000000
+3rd Quartile:   7.000000
+Maximum:        54.000000</code></pre><h2 id="Bethe-/-Factor-graph"><a class="docs-heading-anchor" href="#Bethe-/-Factor-graph">Bethe / Factor graph</a><a id="Bethe-/-Factor-graph-1"></a><a class="docs-heading-anchor-permalink" href="#Bethe-/-Factor-graph" title="Permalink"></a></h2><p>The Bethe cluster graph has a cluster for each node family (<em>factor clusters</em>) and for each node (<em>variable clusters</em>). Each factor cluster is joined to the variable cluster for any node it contains.</p><pre><code class="language-julia-repl hljs">julia&gt; fg = PGBP.clustergraph!(net, PGBP.Bethe());
+
+julia&gt; (PGBP.labels(fg) |&gt; length, PGBP.edge_labels(fg) |&gt; length) # (no. of clusters, no. of edges)
+(1557, 1914)
+
+julia&gt; (length(fg[cl][1]) for cl in PGBP.labels(fg)) |&gt; collect |&gt; summarystats
+Summary Stats:
+Length:         1557
+Missing Count:  0
+Mean:           1.743738
+Std. Deviation: 0.809151
+Minimum:        1.000000
+1st Quartile:   1.000000
+Median:         2.000000
+3rd Quartile:   2.000000
+Maximum:        3.000000</code></pre><p>If each hybrid node has 2 parents (as for <code>net</code>), then the maximum cluster size is 3.</p><h2 id="Join-graph-structuring"><a class="docs-heading-anchor" href="#Join-graph-structuring">Join-graph structuring</a><a id="Join-graph-structuring-1"></a><a class="docs-heading-anchor-permalink" href="#Join-graph-structuring" title="Permalink"></a></h2><p><a href="https://doi.org/10.1613/jair.2842">Join-graph structuring</a> allows the user to specify the maximum cluster size <span>$k^*$</span>. See <a href="../../#PhyloGaussianBeliefProp.JoinGraphStructuring"><code>JoinGraphStructuring</code></a> for more details on the algorithm.</p><pre><code class="language-julia-repl hljs">julia&gt; jg = PGBP.clustergraph!(net, PGBP.JoinGraphStructuring(10));
+
+julia&gt; (PGBP.labels(jg) |&gt; length, PGBP.edge_labels(jg) |&gt; length)
+(1001, 1200)
+
+julia&gt; (length(jg[cl][1]) for cl in PGBP.labels(jg)) |&gt; collect |&gt; summarystats
+Summary Stats:
+Length:         1001
+Missing Count:  0
+Mean:           6.036963
+Std. Deviation: 2.177070
+Minimum:        1.000000
+1st Quartile:   4.000000
+Median:         6.000000
+3rd Quartile:   8.000000
+Maximum:        10.000000</code></pre><p>Since the set of clusters has to be family-preserving (see above), <span>$k^*$</span> cannot be smaller than the largest node family (i.e. a node and its parents). For example, if the network has hybrid nodes, then <span>$k^*\ge 3$</span> necessarily.</p><pre><code class="language-julia-repl hljs">julia&gt; jg = PGBP.clustergraph!(net, PGBP.JoinGraphStructuring(2));
+ERROR: maxclustersize 2 is smaller than the size of largest node family 3.</code></pre><p>On the other extreme, suppose we set <span>$k^*=54$</span>, the maximum cluster size of the clique tree above:</p><pre><code class="language-julia-repl hljs">julia&gt; jg2 = PGBP.clustergraph!(net, PGBP.JoinGraphStructuring(54));
+
+julia&gt; (PGBP.labels(jg2) |&gt; length, PGBP.edge_labels(jg2) |&gt; length)
+(801, 800)
+
+julia&gt; (length(jg2[cl][1]) for cl in PGBP.labels(jg2)) |&gt; collect |&gt; summarystats
+Summary Stats:
+Length:         801
+Missing Count:  0
+Mean:           9.539326
+Std. Deviation: 9.953078
+Minimum:        1.000000
+1st Quartile:   4.000000
+Median:         5.000000
+3rd Quartile:   10.000000
+Maximum:        54.000000</code></pre><p>then it turns out the <code>jg2</code> is a clique tree (since the number of clusters and edges differ by 1), though not the same one as <code>ct</code>. Generally, a cluster graph with larger clusters is less likely to be loopy than one with smaller clusters.</p><h2 id="LTRIP"><a class="docs-heading-anchor" href="#LTRIP">LTRIP</a><a id="LTRIP-1"></a><a class="docs-heading-anchor-permalink" href="#LTRIP" title="Permalink"></a></h2><p>For <a href="https://doi.org/10.1145/3132711.3132717">LTRIP</a>, the user provides the set of clusters, which are assumed to be family-preserving (see above).</p><ol><li>For each node, the clusters that contain it are joined as a tree, prioritizing edges formed with clusters that intersect heavily with others. See <a href="#LTRIP"><code>LTRIP</code></a> for details.</li><li>The trees for each node are layered on one another (the sepsets for an edge are merged) to produce the cluster graph.</li></ol><p>As an example, we use the clusters from join-graph structuring:</p><pre><code class="language-julia-repl hljs">julia&gt; clusters = (jg[cl][2] for cl in PGBP.labels(jg)) |&gt; collect; # vector of clusters, each given as a vector of preorder indices in decreasing order
+
+julia&gt; lg = PGBP.clustergraph!(net, PGBP.LTRIP(clusters, net));
+
+julia&gt; (PGBP.labels(lg) |&gt; length, PGBP.edge_labels(lg) |&gt; length)
+(1001, 1249)</code></pre><p>The summary statistics would be the same as for <code>jg</code>&#39;s clusters, though it appears that <code>lg</code> is more densely connected than <code>jg</code>.</p><p>If the user does not provide the clusters, then the set of node families (see <a href="../../#PhyloGaussianBeliefProp.nodefamilies-Tuple{PhyloNetworks.HybridNetwork}"><code>nodefamilies</code></a>) is used by default:</p><pre><code class="language-julia-repl hljs">julia&gt; lg = PGBP.clustergraph!(net, PGBP.LTRIP(net));
+
+julia&gt; (PGBP.labels(lg) |&gt; length, PGBP.edge_labels(lg) |&gt; length)
+(801, 1158)</code></pre><p>There are 801 clusters, 1 per node (family), as expected.</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../evolutionary_models/">« Evolutionary models</a><a class="docs-footer-nextpage" href="../regularization/">Regularization »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.4.1 on <span class="colophon-date" title="Thursday 16 May 2024 14:04">Thursday 16 May 2024</span>. Using Julia version 1.10.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>

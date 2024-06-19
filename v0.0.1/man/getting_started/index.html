@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Getting started · PhyloGaussianBeliefProp.jl</title><meta name="title" content="Getting started · PhyloGaussianBeliefProp.jl"/><meta property="og:title" content="Getting started · PhyloGaussianBeliefProp.jl"/><meta property="twitter:title" content="Getting started · PhyloGaussianBeliefProp.jl"/><meta name="description" content="Documentation for PhyloGaussianBeliefProp.jl."/><meta property="og:description" content="Documentation for PhyloGaussianBeliefProp.jl."/><meta property="twitter:description" content="Documentation for PhyloGaussianBeliefProp.jl."/><meta property="og:url" content="https://cecileane.github.io/PhyloGaussianBeliefProp.jl/stable/man/getting_started/"/><meta property="twitter:url" content="https://cecileane.github.io/PhyloGaussianBeliefProp.jl/stable/man/getting_started/"/><link rel="canonical" href="https://cecileane.github.io/PhyloGaussianBeliefProp.jl/stable/man/getting_started/"/><script data-outdated-warner src="../../assets/warner.js"></script><link href="https://cdnjs.cloudflare.com/ajax/libs/lato-font/3.0.0/css/lato-font.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/juliamono/0.050/juliamono.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.8/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="../.."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../../assets/documenter.js"></script><script src="../../search_index.js"></script><script src="../../siteinfo.js"></script><script src="../../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-dark.css" data-theme-name="documenter-dark" data-theme-primary-dark/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../../assets/themeswap.js"></script><link href="../../assets/citations.css" rel="stylesheet" type="text/css"/></head><body><div id="documenter"><nav class="docs-sidebar"><div class="docs-package-name"><span class="docs-autofit"><a href="../../">PhyloGaussianBeliefProp.jl</a></span></div><button class="docs-search-query input is-rounded is-small is-clickable my-2 mx-auto py-1 px-2" id="documenter-search-query">Search docs (Ctrl + /)</button><ul class="docs-menu"><li><a class="tocitem" href="../../">Home</a></li><li><span class="tocitem">Manual</span><ul><li><a class="tocitem" href="../installation/">Installation</a></li><li class="is-active"><a class="tocitem" href>Getting started</a><ul class="internal"><li><a class="tocitem" href="#Exact-likelihood-for-fixed-parameters"><span>Exact likelihood for fixed parameters</span></a></li><li><a class="tocitem" href="#Exact-inference"><span>Exact inference</span></a></li><li><a class="tocitem" href="#Approximate-inference"><span>Approximate inference</span></a></li></ul></li><li><a class="tocitem" href="../background/">Background</a></li><li><a class="tocitem" href="../evolutionary_models/">Evolutionary models</a></li><li><a class="tocitem" href="../clustergraphs/">Cluster graphs</a></li><li><a class="tocitem" href="../regularization/">Regularization</a></li><li><a class="tocitem" href="../message_schedules/">Message schedules</a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><a class="docs-sidebar-button docs-navbar-link fa-solid fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a><nav class="breadcrumb"><ul class="is-hidden-mobile"><li><a class="is-disabled">Manual</a></li><li class="is-active"><a href>Getting started</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>Getting started</a></li></ul></nav><div class="docs-right"><a class="docs-navbar-link" href="https://github.com/cecileane/PhyloGaussianBeliefProp.jl" title="View the repository on GitHub"><span class="docs-icon fa-brands"></span><span class="docs-label is-hidden-touch">GitHub</span></a><a class="docs-navbar-link" href="https://github.com/cecileane/PhyloGaussianBeliefProp.jl/blob/main/docs/src/man/getting_started.md" title="Edit source on GitHub"><span class="docs-icon fa-solid"></span></a><a class="docs-settings-button docs-navbar-link fa-solid fa-gear" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-article-toggle-button fa-solid fa-chevron-up" id="documenter-article-toggle-button" href="javascript:;" title="Collapse all docstrings"></a></div></header><article class="content" id="documenter-page"><h1 id="Getting-started"><a class="docs-heading-anchor" href="#Getting-started">Getting started</a><a id="Getting-started-1"></a><a class="docs-heading-anchor-permalink" href="#Getting-started" title="Permalink"></a></h1><p>This version of the package is a proof of concept, and not all methods have been fully implemented.</p><p>A minimal API is still incomplete, and so we demonstrate the package&#39;s various capabilities as pipelines involving multiple internal functions. A complete API that wraps these pipelines will be made available later.</p><p>In what follows, we use simulated trait data. In most of this manual, we use as an example the network topology from <a href="https://doi.org/10.1038/nature13673">Lazaridis et al. (2014), Figure 3</a> [<a href="../background/#lazaridis2014ancient">1</a>], displayed below, with branch lengths arbitrarily set to 1 and inheritance probabilities (admixture proportions) set arbibitrarily to 0.4 and 0.6 at each hybrid node.</p><p><img src="../../assets/lazaridis_2014_trim.png" alt/></p><h2 id="Exact-likelihood-for-fixed-parameters"><a class="docs-heading-anchor" href="#Exact-likelihood-for-fixed-parameters">Exact likelihood for fixed parameters</a><a id="Exact-likelihood-for-fixed-parameters-1"></a><a class="docs-heading-anchor-permalink" href="#Exact-likelihood-for-fixed-parameters" title="Permalink"></a></h2><h3 id="1.-Read-in-the-network-and-the-tip-data"><a class="docs-heading-anchor" href="#1.-Read-in-the-network-and-the-tip-data">1. Read in the network and the tip data</a><a id="1.-Read-in-the-network-and-the-tip-data-1"></a><a class="docs-heading-anchor-permalink" href="#1.-Read-in-the-network-and-the-tip-data" title="Permalink"></a></h3><pre><code class="language-julia-repl hljs">julia&gt; using PhyloGaussianBeliefProp
+
+julia&gt; const PGBP = PhyloGaussianBeliefProp;
+
+julia&gt; using PhyloNetworks # `readTopology`, `tipLabels`, `preorder!`
+
+julia&gt; using DataFrames # `DataFrame`
+
+julia&gt; net = readTopology(pkgdir(PGBP, &quot;test/example_networks&quot;, &quot;lazaridis_2014.phy&quot;))
+PhyloNetworks.HybridNetwork, Rooted Network
+23 edges
+20 nodes: 7 tips, 4 hybrid nodes, 9 internal tree nodes.
+tip labels: Mbuti, Onge, Karitiana, MA1, ...
+(Mbuti:1.0,(((Onge:1.0,#H1:0.01::0.4)EasternNorthAfrican:1.0,(((Karitiana:1.0)#H1:0.01::0.6,(MA1:1.0,#H3:0.01::0.4)ANE:1.0)AncientNorthEurasian:1.0,(((#H2:0.01::0.4)#H3:0.01::0.6,Loschbour:1.0)WHG:1.0,#H4:0.01::0.4)WestEurasian:1.0)I1:1.0)I2:1.0,((European:1.0)#H2:0.01::0.6,Stuttgart:1.0)#H4:0.01::0.6)NonAfrican:1.0)I3;
+julia&gt; preorder!(net) # updates net.nodes_changed to contain network nodes listed in preorder
+
+julia&gt; df = DataFrame(taxon=tipLabels(net), # simulated using `simulate(net, ParamsBM(0, 1))` from PhyloNetworks
+               x=[1.343, 0.841, -0.623, -1.483, 0.456, -0.081, 1.311])
+7×2 DataFrame
+ Row │ taxon      x       
+     │ String     Float64 
+─────┼────────────────────
+   1 │ Mbuti        1.343
+   2 │ Onge         0.841
+   3 │ Karitiana   -0.623
+   4 │ MA1         -1.483
+   5 │ Loschbour    0.456
+   6 │ European    -0.081
+   7 │ Stuttgart    1.311</code></pre><p>In this example, the trait <code>x</code> is univariate. We have mapped the observed data to the corresponding species in the dataframe <code>df</code>.</p><p>The call to <code>preorder!</code> updates <code>net</code> to contain a list of its nodes arranged in preorder (or topological ordering). Many internals in the package assume that this information is available, and so it is important that this be called immediately after reading in the network!</p><h3 id="2.-Choose-an-evolutionary-model"><a class="docs-heading-anchor" href="#2.-Choose-an-evolutionary-model">2. Choose an evolutionary model</a><a id="2.-Choose-an-evolutionary-model-1"></a><a class="docs-heading-anchor-permalink" href="#2.-Choose-an-evolutionary-model" title="Permalink"></a></h3><p>At the moment, models available are: <a href="../../#PhyloGaussianBeliefProp.UnivariateBrownianMotion"><code>UnivariateBrownianMotion</code></a>, <a href="../../#PhyloGaussianBeliefProp.UnivariateOrnsteinUhlenbeck"><code>UnivariateOrnsteinUhlenbeck</code></a>, <a href="../../#PhyloGaussianBeliefProp.MvDiagBrownianMotion"><code>MvDiagBrownianMotion</code></a>, <a href="../../#PhyloGaussianBeliefProp.MvFullBrownianMotion"><code>MvFullBrownianMotion</code></a>.</p><p>Note however that not all methods may be implemented across all models. See section <a href="../evolutionary_models/#Evolutionary-models">Evolutionary models</a> for more details on the available models.</p><pre><code class="language-julia-repl hljs">julia&gt; m = PGBP.UnivariateBrownianMotion(1, 0) # σ2 = 1.0, μ = 0.0
+Univariate Brownian motion
+
+- evolutionary variance rate σ2 :
+1.0
+- root mean μ :
+0.0</code></pre><p>We specify a univariate Brownian motion with mean <span>$\mu=0$</span> and variance rate <span>$\sigma^2=1$</span>. We want to compute the likelihood for these particular values, though other values may better fit the data.</p><h3 id="3.-Build-a-cluster-graph-from-the-network"><a class="docs-heading-anchor" href="#3.-Build-a-cluster-graph-from-the-network">3. Build a cluster graph from the network</a><a id="3.-Build-a-cluster-graph-from-the-network-1"></a><a class="docs-heading-anchor-permalink" href="#3.-Build-a-cluster-graph-from-the-network" title="Permalink"></a></h3><p>Methods available are: <a href="../../#PhyloGaussianBeliefProp.Bethe"><code>Bethe</code></a>, <a href="../clustergraphs/#LTRIP"><code>LTRIP</code></a>, <a href="../../#PhyloGaussianBeliefProp.JoinGraphStructuring"><code>JoinGraphStructuring</code></a>, <a href="../../#PhyloGaussianBeliefProp.Cliquetree"><code>Cliquetree</code></a>.</p><p>We first choose <code>Cliquetree</code> to compute the likelihood exactly. Other methods may return a loopy cluster graph, which gives an approximate likelihood. See section <a href="../clustergraphs/#Cluster-graphs">Cluster graphs</a> for more background on cluster graphs.</p><pre><code class="language-julia-repl hljs">julia&gt; ct = PGBP.clustergraph!(net, PGBP.Cliquetree())
+Meta graph based on a Graphs.SimpleGraphs.SimpleGraph{Int8} with vertex labels of type Symbol, vertex metadata of type Tuple{Vector{Symbol}, Vector{Int8}}, edge metadata of type Vector{Int8}, graph metadata given by :cliquetree, and default weight 0
+
+julia&gt; PGBP.labels(ct) |&gt; collect # cluster labels
+17-element Vector{Symbol}:
+ :H1EasternNorthAfricanAncientNorthEurasian
+ :EasternNorthAfricanAncientNorthEurasianI2
+ :OngeEasternNorthAfrican
+ :StuttgartH4
+ :MbutiI3
+ :H2H3H4
+ :H3ANEWHGH4
+ :ANEWHGH4WestEurasian
+ :LoschbourWHG
+ :KaritianaH1
+ :EuropeanH2
+ :AncientNorthEurasianWestEurasianI1NonAfrican
+ :ANEH4WestEurasianNonAfrican
+ :ANEAncientNorthEurasianWestEurasianNonAfrican
+ :AncientNorthEurasianI1I2NonAfrican
+ :NonAfricanI3
+ :MA1ANE</code></pre><p>See that each cluster&#39;s label is derived by concatenating the labels of the nodes it contains.</p><h3 id="4.-Initialize-cluster-graph-beliefs"><a class="docs-heading-anchor" href="#4.-Initialize-cluster-graph-beliefs">4. Initialize cluster graph beliefs</a><a id="4.-Initialize-cluster-graph-beliefs-1"></a><a class="docs-heading-anchor-permalink" href="#4.-Initialize-cluster-graph-beliefs" title="Permalink"></a></h3><p><code>ct</code> describes the topology of our cluster graph, but does not track the beliefs for each cluster. Next, we:</p><ul><li>allocate memory for these beliefs</li><li>initialize their values using the evolutionary model</li><li>wrap them within another data structure to facilitate message passing.</li></ul><pre><code class="language-julia-repl hljs">julia&gt; using Tables # `columntable`
+
+julia&gt; tbl_x = columntable(select(df, :x)) # extract trait `x` from `df` as a column table
+(x = [1.343, 0.841, -0.623, -1.483, 0.456, -0.081, 1.311],)
+
+julia&gt; b = PGBP.init_beliefs_allocate(tbl_x, df.taxon, net, ct, m); # allocate memory for beliefs
+
+julia&gt; length(b) # no. of beliefs
+33
+
+julia&gt; b[1] # belief for cluster {H1, EasternNorthAfrican, AncientNorthEurasian} before factor assignment
+belief for Cluster H1EasternNorthAfricanAncientNorthEurasian, 1 traits × 3 nodes, dimension 3.
+Node labels: Int8[17, 16, 10]
+trait × node matrix of non-degenerate beliefs:
+Bool[1 1 1]
+exponential quadratic belief, parametrized by
+μ: [0.0, 0.0, 0.0]
+h: [0.0, 0.0, 0.0]
+J: [0.0 0.0 0.0; 0.0 0.0 0.0; 0.0 0.0 0.0]
+g: 0.0
+
+julia&gt; PGBP.init_beliefs_assignfactors!(b, m, tbl_x, df.taxon, net.nodes_changed); # initialize beliefs from evolutionary model
+
+julia&gt; b[1] # belief for cluster {H1, EasternNorthAfrican, AncientNorthEurasian} after factor assignment
+belief for Cluster H1EasternNorthAfricanAncientNorthEurasian, 1 traits × 3 nodes, dimension 3.
+Node labels: Int8[17, 16, 10]
+trait × node matrix of non-degenerate beliefs:
+Bool[1 1 1]
+exponential quadratic belief, parametrized by
+μ: [0.0, 0.0, 0.0]
+h: [0.0, 0.0, 0.0]
+J: [192.30769230769232 -76.92307692307693 -115.38461538461539; -76.92307692307693 30.769230769230774 46.15384615384616; -115.38461538461539 46.15384615384616 69.23076923076923]
+g: 1.7106097934927051
+
+julia&gt; ctb = PGBP.ClusterGraphBelief(b); # wrap beliefs to facilitate message passing
+
+julia&gt; PGBP.nclusters(ctb) # no. of cluster beliefs
+17
+
+julia&gt; PGBP.nsepsets(ctb) # no. of edge/sepset beliefs
+16</code></pre><p><code>b</code> is a vector of all beliefs, one for each cluster and edge (also known as <em>sepset</em>) in the cluster graph. The edge beliefs store the most recent messages passed between neighboring clusters.</p><p>Recall that each cluster or edge is associated with a set of nodes. The <em>scope</em> <span>$x$</span> of its belief comes from stacking the trait vectors for these nodes. A belief with scope <span>$x$</span> is parametrized by <span>$(\bm{J},h,g)$</span> as follows:</p><p class="math-container">\[\exp(-x^{\top}\bm{J}x/2 + h^{\top}x + g)\]</p><p>We show belief <code>b[1]</code> before and after factor (i.e. conditional distribution) assignment. Note that its <code>J</code> and <code>g</code> parameters are changed.</p><p><code>ctb</code> contains <code>b</code> with added information to locate specific beliefs in <code>b</code> from their corresponding cluster/edge labels in <code>ct</code>, and added storage to log information during message passing.</p><h3 id="5.-Propose-a-schedule-from-the-cluster-graph"><a class="docs-heading-anchor" href="#5.-Propose-a-schedule-from-the-cluster-graph">5. Propose a schedule from the cluster graph</a><a id="5.-Propose-a-schedule-from-the-cluster-graph-1"></a><a class="docs-heading-anchor-permalink" href="#5.-Propose-a-schedule-from-the-cluster-graph" title="Permalink"></a></h3><p>A message schedule can be described by a sequence of cluster pairs. Each pairing tells us to send a message between these clusters (which must be neighbors), while the order within the pair indicates the sender and the recipient.</p><p>We build a message schedule <code>sched</code> from <code>ct</code> by finding a minimal set of spanning trees for the cluster graph that together cover all its edges (i.e. neighbor cluster pairs). Each spanning tree is represented as a sequence of edges following some preorder traversal of <code>ct</code>. See section <a href="../message_schedules/#Message-schedules">Message schedules</a> for more details on message schedules.</p><p>Since <code>ct</code> is a clique tree, there is a single spanning tree (<code>sched[1]</code>). We extract and display the preorder sequence of edges from <code>sched[1]</code>. In this example, <code>NonAfricanI3</code> is the root cluster of <code>ct</code>, and <code>KaritianaH1</code> is a leaf cluster.</p><pre><code class="language-julia-repl hljs">julia&gt; sched = PGBP.spanningtrees_clusterlist(ct, net.nodes_changed);
+
+julia&gt; DataFrame(parent=sched[1][1], child=sched[1][2]) # edges of tree 1 in preorder
+16×2 DataFrame
+ Row │ parent                             child                             
+     │ Symbol                             Symbol                            
+─────┼──────────────────────────────────────────────────────────────────────
+   1 │ NonAfricanI3                       AncientNorthEurasianWestEurasian…
+   2 │ AncientNorthEurasianWestEurasian…  ANEAncientNorthEurasianWestEuras…
+   3 │ ANEAncientNorthEurasianWestEuras…  ANEH4WestEurasianNonAfrican
+   4 │ ANEH4WestEurasianNonAfrican        ANEWHGH4WestEurasian
+   5 │ ANEWHGH4WestEurasian               H3ANEWHGH4
+   6 │ H3ANEWHGH4                         LoschbourWHG
+   7 │ H3ANEWHGH4                         MA1ANE
+   8 │ NonAfricanI3                       MbutiI3
+   9 │ H3ANEWHGH4                         H2H3H4
+  10 │ H2H3H4                             EuropeanH2
+  11 │ H2H3H4                             StuttgartH4
+  12 │ AncientNorthEurasianWestEurasian…  AncientNorthEurasianI1I2NonAfric…
+  13 │ AncientNorthEurasianI1I2NonAfric…  EasternNorthAfricanAncientNorthE…
+  14 │ EasternNorthAfricanAncientNorthE…  H1EasternNorthAfricanAncientNort…
+  15 │ H1EasternNorthAfricanAncientNort…  OngeEasternNorthAfrican
+  16 │ H1EasternNorthAfricanAncientNort…  KaritianaH1</code></pre><h3 id="6.-Calibrate-beliefs-with-the-schedule"><a class="docs-heading-anchor" href="#6.-Calibrate-beliefs-with-the-schedule">6. Calibrate beliefs with the schedule</a><a id="6.-Calibrate-beliefs-with-the-schedule-1"></a><a class="docs-heading-anchor-permalink" href="#6.-Calibrate-beliefs-with-the-schedule" title="Permalink"></a></h3><p>We apply one iteration of belief propagation on <code>ctb</code> following the schedule <code>sched</code>. Since <code>ct</code> is a clique tree, the resulting beliefs are guaranteed to be <em>calibrated</em> (i.e. the beliefs of neighbor clusters agree marginally over the sepset between them).</p><pre><code class="language-julia-repl hljs">julia&gt; PGBP.calibrate!(ctb, sched);</code></pre><h3 id="7.-Extract-the-log-likelihood"><a class="docs-heading-anchor" href="#7.-Extract-the-log-likelihood">7. Extract the log-likelihood</a><a id="7.-Extract-the-log-likelihood-1"></a><a class="docs-heading-anchor-permalink" href="#7.-Extract-the-log-likelihood" title="Permalink"></a></h3><p>On a calibrated clique tree, there are two ways to obtain the log-likelihood:</p><ul><li>integrate any belief over its scope to get its normalization constant (<code>norm</code>)</li><li>compute the <a href="../../#PhyloGaussianBeliefProp.factored_energy-Tuple{PhyloGaussianBeliefProp.ClusterGraphBelief}"><code>factored_energy</code></a>, which approximates the log-likelihood on loopy cluster graphs but is exact on a clique tree</li></ul><pre><code class="language-julia-repl hljs">julia&gt; (_, norm) = PGBP.integratebelief!(b[1]); # `norm` is the integral of `b[1]` over its scope
+
+julia&gt; norm
+-11.273958980921249
+
+julia&gt; (_, _, fe) = PGBP.factored_energy(ctb); # `fe` is the factored energy from the cluster/edge beliefs
+
+julia&gt; fe
+-11.273958980921272</code></pre><p>The first approach is more efficient (it uses only one belief, rather than all beliefs), but only works for a clique tree. The normalization constant of a belief from a calibrated loopy cluster graph cannot be similarly interpreted.</p><p>We see that both approaches return the same value, modulo rounding error.</p><h2 id="Exact-inference"><a class="docs-heading-anchor" href="#Exact-inference">Exact inference</a><a id="Exact-inference-1"></a><a class="docs-heading-anchor-permalink" href="#Exact-inference" title="Permalink"></a></h2><p>In the section above, we computed the log-likelihood for <span>$\mu=0$</span>, <span>$\sigma^2=1$</span>.</p><p>Now we find <span>$\mu=\widehat{\mu}$</span> and <span>$\sigma^2=\widehat{\sigma}^2$</span> that maximize the log-likelihood. There are two options:</p><ul><li>iterative optimization</li><li>exact computation using belief propagation</li></ul><pre><code class="language-julia-repl hljs">julia&gt; mod, ll, _ = PGBP.calibrate_optimize_cliquetree!( # iterative optimization
+               ctb, # beliefs
+               ct, # clique tree
+               net.nodes_changed, # network nodes in preorder
+               tbl_x, # trait data
+               df.taxon, # tip labels
+               PGBP.UnivariateBrownianMotion, # type of evolutionary model
+               (1.0, 0)); # starting parameters: σ2 = 1.0, μ = 0.0
+
+julia&gt; mod # ML estimates
+Univariate Brownian motion
+
+- evolutionary variance rate σ2 :
+0.31812948857664464
+- root mean μ :
+1.1525789703803826
+
+julia&gt; ll # log-likelihood for ML estimates
+-8.656529929205773
+
+julia&gt; mod, _ = PGBP.calibrate_exact_cliquetree!( # exact computation
+               ctb,
+               sched[1], # schedule the order in which edges (sepsets) are traversed
+               net.nodes_changed,
+               tbl_x,
+               df.taxon,
+               PGBP.UnivariateBrownianMotion);
+
+julia&gt; mod # REML estimate for σ2, ML estimate for μ
+Univariate Brownian motion
+
+- evolutionary variance rate σ2 :
+0.37115107002903314
+- root mean μ :
+1.1525789703844822</code></pre><p>Both options return the maximum-likelihood (ML) estimate for <span>$\mu$</span>, though the latter returns the restricted maximum-likelihood (REML) estimate for <span>$\sigma^2$</span>.</p><p>Strictly speaking, the estimates from the latter option do not jointly maximize the log-likelihood. However, the REML estimate for <span>$\sigma^2$</span> is generally less biased than its ML counterpart. In this simple model, the REML estimate is just equal to the ML estimate up to a factor <span>$(n-1)/n$</span>, with <span>$n$</span> the number of tips in the network:</p><pre><code class="language-julia-repl hljs">julia&gt; PGBP.varianceparam(mod) * (net.numTaxa - 1) / net.numTaxa # sigma2_REML = (n-1)/n * sigma2_ML
+0.3181294885963141</code></pre><h2 id="Approximate-inference"><a class="docs-heading-anchor" href="#Approximate-inference">Approximate inference</a><a id="Approximate-inference-1"></a><a class="docs-heading-anchor-permalink" href="#Approximate-inference" title="Permalink"></a></h2><p>Suppose now that we use a loopy cluster graph instead of a clique tree. We choose <code>Bethe</code> to construct a Bethe cluster graph (also known as factor graph) <code>fg</code>.</p><p>As before, we set up a data structure <code>fgb</code> to track the beliefs of the factor graph during message passing. Then we call <a href="../../#PhyloGaussianBeliefProp.calibrate_optimize_clustergraph!"><code>calibrate_optimize_clustergraph!</code></a>, the analog of <a href="../../#PhyloGaussianBeliefProp.calibrate_optimize_cliquetree!-Tuple{PhyloGaussianBeliefProp.ClusterGraphBelief, Any, Vector{PhyloNetworks.Node}, NamedTuple{names, T} where {N, names, T&lt;:Tuple{Vararg{AbstractVector, N}}}, AbstractVector, Any, Any}"><code>calibrate_optimize_cliquetree!</code></a> from earlier:</p><pre><code class="language-julia-repl hljs">julia&gt; fg = PGBP.clustergraph!(net, PGBP.Bethe()) # factor graph
+Meta graph based on a Graphs.SimpleGraphs.SimpleGraph{Int8} with vertex labels of type Symbol, vertex metadata of type Tuple{Vector{Symbol}, Vector{Int8}}, edge metadata of type Vector{Int8}, graph metadata given by :Bethe, and default weight 0
+
+julia&gt; b_fg = PGBP.init_beliefs_allocate(tbl_x, df.taxon, net, fg, m); # allocate memory for beliefs
+
+julia&gt; fgb = PGBP.ClusterGraphBelief(b_fg); # wrap beliefs to facilitate message passing
+
+julia&gt; mod, fe, _ = PGBP.calibrate_optimize_clustergraph!(fgb, fg, net.nodes_changed, tbl_x,
+               df.taxon, PGBP.UnivariateBrownianMotion, (1.0, 0));
+
+julia&gt; mod # parameter estimates
+Univariate Brownian motion
+
+- evolutionary variance rate σ2 :
+0.3181295330492941
+- root mean μ :
+1.1525789120595669
+
+julia&gt; fe # factored energy approximation to the log-likelihood
+-8.587925093657454</code></pre><p>We see that both parameter estimates are very close to their maximum-likelihood counterparts (within 10⁻⁴ percent), and the factored energy slightly overestimates the log-likelihood for these values (within 1 percent).</p></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../installation/">« Installation</a><a class="docs-footer-nextpage" href="../background/">Background »</a><div class="flexbox-break"></div><p class="footer-message">Powered by <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> and the <a href="https://julialang.org/">Julia Programming Language</a>.</p></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="auto">Automatic (OS)</option><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> version 1.4.1 on <span class="colophon-date" title="Thursday 16 May 2024 14:04">Thursday 16 May 2024</span>. Using Julia version 1.10.3.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
